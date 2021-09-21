@@ -1,0 +1,22 @@
+###
+POST  http://localhost:8081/authorize/login
+Content-Type: application/json
+
+{
+  "username": "zhangsan",
+  "password": "abc123"
+}
+
+
+###
+POST  http://localhost:8081/authorize/register
+Content-Type: application/json
+
+{
+  "name": "张三李四",
+  "username": "zhangsan",
+  "password": "12345678",
+  "matchPassword":"12345678",
+  "email":"cxl@qq.com"
+}
+

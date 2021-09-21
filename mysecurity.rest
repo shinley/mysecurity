@@ -1,0 +1,14 @@
+@password
+###
+GET http://localhost:8080/api/greeting
+Authorization: Basic user {{password}}
+
+###
+GET http://localhost:8080/api/greeting?name=王五
+Authorization: Basic user {{password}}
+Content-Type: application/json
+
+{
+  "gender": "男",
+  "idNo": "222333344554555566"
+}

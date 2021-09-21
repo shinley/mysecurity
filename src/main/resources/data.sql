@@ -1,0 +1,2 @@
+insert into users(username, password, enabled) values('user', '{bcrypt}$sdafaf', 1),('old_user', '{sha-1}$sdafaf', 1);
+insert into authorities(username, authority) values ('old_user','ROLE_USER'),('user','ROLE_USER'),('user','ROLE_ADMIN');
