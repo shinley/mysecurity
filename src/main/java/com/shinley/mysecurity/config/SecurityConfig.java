@@ -73,11 +73,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .roles("USER", "ADMIN")
 //        ;
 //    }
+//
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.jdbcAuthentication()
+//                .dataSource(dataSource)
+//                .passwordEncoder(passwordEncoder());
+//        ;
+//    }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
+                .usersByUsernameQuery("select username, password, enabled from mooc_users where username=?")
+                .authoritiesByUsernameQuery("select username, authority from mooc_authorities where username=?")
                 .passwordEncoder(passwordEncoder());
         ;
     }

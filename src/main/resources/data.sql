@@ -1,2 +1,2 @@
-insert into users(username, password, enabled) values('user', '{bcrypt}$2a$10$czDXnYgcuHPqdYwewS1tAOVn0WZdUU6kx7WV.Lh.3WxPiEDaUwRTG', 1),('old_user', '{SHA-1}{V+M6G5s38TVSgzNseMHGDrduLjN06mJ3btCmcMDC8b4=}600f76a9d83a495b426e4507bd5decaca0b826e4', 1);
-insert into authorities(username, authority) values ('old_user','ROLE_USER'),('user','ROLE_USER'),('user','ROLE_ADMIN');
+insert into mooc_users(username, password, enabled) values('user', '{bcrypt}$2a$10$czDXnYgcuHPqdYwewS1tAOVn0WZdUU6kx7WV.Lh.3WxPiEDaUwRTG', 1),('old_user', '{SHA-1}{V+M6G5s38TVSgzNseMHGDrduLjN06mJ3btCmcMDC8b4=}600f76a9d83a495b426e4507bd5decaca0b826e4', 1);
+insert into mooc_authorities(username, authority) values ('old_user','ROLE_USER'),('user','ROLE_USER'),('user','ROLE_ADMIN');
