@@ -22,6 +22,11 @@ spring:
       settings:
         trace: false
         web-allow-others: false
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
 
   messages:
     basename: messages
