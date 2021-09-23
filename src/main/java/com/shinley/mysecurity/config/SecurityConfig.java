@@ -1,19 +1,24 @@
 package com.shinley.mysecurity.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shinley.mysecurity.repository.LDAPUserRepo;
 import com.shinley.mysecurity.security.filter.RestAuthenticationFilter;
+import com.shinley.mysecurity.security.ldap.LDAPMultiAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
@@ -38,6 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final DataSource dataSource;
 
     private final UserDetailsService userDetailsService;
+
+    private final UserDetailsPasswordService userDetailsPasswordService;
+
+    private final LDAPUserRepo ldapUserRepo;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -95,11 +104,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        ;
 //    }
 
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService)
+//                .passwordEncoder(passwordEncoder());
+//        ;
+//    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-        ;
+        auth.authenticationProvider(ldapMultiAuthenticationProvider());
+        auth.authenticationProvider(daoAuthenticationProvider());
     }
 
 
@@ -115,6 +130,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             );
             res.getWriter().println(objectMapper.writeValueAsString(errData));
         };
+    }
+
+    @Bean
+    LDAPMultiAuthenticationProvider ldapMultiAuthenticationProvider() {
+        LDAPMultiAuthenticationProvider daoAuthenticationProvider = new LDAPMultiAuthenticationProvider(ldapUserRepo);
+        return daoAuthenticationProvider;
+    }
+
+    @Bean
+    DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsPasswordService(userDetailsPasswordService);
+        return daoAuthenticationProvider;
     }
 
     private AuthenticationSuccessHandler jsonAuthenticationSuccessHandler() {
