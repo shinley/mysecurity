@@ -1,11 +1,10 @@
 package com.shinley.mysecurity.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shinley.mysecurity.filter.RestAuthenticationFilter;
+import com.shinley.mysecurity.security.filter.RestAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.MessageDigestPasswordEncoder;
@@ -36,6 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final ObjectMapper objectMapper;
 
     private final DataSource dataSource;
+
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -83,12 +85,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
 
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.jdbcAuthentication()
+//                .dataSource(dataSource)
+//                .usersByUsernameQuery("select username, password, enabled from mooc_users where username=?")
+//                .authoritiesByUsernameQuery("select username, authority from mooc_authorities where username=?")
+//                .passwordEncoder(passwordEncoder());
+//        ;
+//    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery("select username, password, enabled from mooc_users where username=?")
-                .authoritiesByUsernameQuery("select username, authority from mooc_authorities where username=?")
+        auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
         ;
     }

@@ -1,6 +1,7 @@
 package com.shinley.mysecurity.domain;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@With
 @Entity
 @Data
 @Table(name="mooc_users")
@@ -24,6 +29,7 @@ public class User implements UserDetails,  Serializable {
     @Column(length = 50)
     private String name;
 
+    @JsonIgnore
     @Column(length = 11, unique = true, nullable = false)
     private String mobile;
 

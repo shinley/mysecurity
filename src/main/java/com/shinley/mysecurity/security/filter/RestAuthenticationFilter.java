@@ -1,4 +1,4 @@
-package com.shinley.mysecurity.filter;
+package com.shinley.mysecurity.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
