@@ -38,3 +38,7 @@ spring:
   messages:
     basename: messages
     encoding: UTF-8
+imooc:
+  jwt:
+    access-token-expire-time: 300000
+    refresh-token-expire-time: 2592000000

@@ -1,8 +1,10 @@
 package com.shinley.mysecurity.utils;
 
+import com.shinley.mysecurity.config.AppProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,12 +14,25 @@ import java.security.Key;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Component
 public class JwtUtil {
 
     public static  final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
-    public String createJwtToken(UserDetails userDetails) {
+    public static  final Key refreshKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+
+    private final AppProperties appProperties;
+
+    public String createAccessToken(UserDetails userDetails) {
+        return createJwtToken(userDetails,appProperties.getJwt().getAccessTokenExpireTime(), key);
+    }
+
+    public String createRefreshToken(UserDetails userDetails) {
+        return createJwtToken(userDetails, appProperties.getJwt().getRefreshTokenExpireTime(), refreshKey);
+    }
+
+    public String createJwtToken(UserDetails userDetails, long timeToExpire, Key key) {
         val now = System.currentTimeMillis();
         return Jwts.builder()
                 .setId("mooc")

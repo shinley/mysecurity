@@ -1,5 +1,6 @@
 package com.shinley.mysecurity.util;
 
+import com.shinley.mysecurity.config.AppProperties;
 import com.shinley.mysecurity.domain.Role;
 import com.shinley.mysecurity.domain.User;
 import com.shinley.mysecurity.utils.JwtUtil;
@@ -23,7 +24,7 @@ public class JwtUtilUnitTests {
 
     @BeforeEach
     public void setup() {
-        jwtUtil = new JwtUtil();
+        jwtUtil = new JwtUtil(new AppProperties());
     }
 
     @Test
@@ -35,7 +36,7 @@ public class JwtUtilUnitTests {
                 );
         val user = User.builder().username(username).authorities(authorities).build();
 
-        val token = jwtUtil.createJwtToken(user);
+        val token = jwtUtil.createAccessToken(user);
 
         // 解析
         val parsedClaims = Jwts.parserBuilder()
