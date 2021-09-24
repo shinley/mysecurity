@@ -3,6 +3,7 @@ package com.shinley.mysecurity.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shinley.mysecurity.repository.LDAPUserRepo;
 import com.shinley.mysecurity.security.filter.RestAuthenticationFilter;
+import com.shinley.mysecurity.security.jwt.JwtFilter;
 import com.shinley.mysecurity.security.ldap.LDAPMultiAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final LDAPUserRepo ldapUserRepo;
 
+    private final JwtFilter jwtFilter;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -57,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .antMatchers("/admin/**").hasRole("ADMIN")
                         .antMatchers("/api/**").hasRole("USER"))
                 .addFilterAt(restAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(csrf -> csrf.ignoringAntMatchers("/authorize/**", "/admin/**", "/api/**"))
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
