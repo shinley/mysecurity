@@ -1,9 +1,11 @@
 package com.shinley.mysecurity.domain;
 
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
+@Builder
 @Entity
 @Table(name = "mooc_roles")
 public class Role implements GrantedAuthority {
