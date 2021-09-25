@@ -19,9 +19,29 @@
         <locator.version>0.40</locator.version>
         <passay.version>1.6.0</passay.version>
         <jjwt.version>0.11.2</jjwt.version>
+        <otp.version>0.2.0</otp.version>
+        <redisson.version>3.12.5</redisson.version>
+        <embedded.redis.version>0.7.2</embedded.redis.version>
     </properties>
 
     <dependencies>
+        <!--Redisson依赖-->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>${redisson.version}</version>
+        </dependency>
+        <!--嵌入式Redis依赖， 集成测试时需要-->
+        <dependency>
+            <groupId>it.ozimov</groupId>
+            <artifactId>embedded-redis</artifactId>
+            <version>${embedded.redis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.eatthepath</groupId>
+            <artifactId>java-otp</artifactId>
+            <version>${otp.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
