@@ -7,12 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.ldap.odm.annotations.Attribute;
 import org.springframework.ldap.odm.annotations.Entry;
+import org.springframework.ldap.odm.annotations.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.naming.Name;
-import javax.persistence.Id;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -24,7 +24,6 @@ import java.util.Collections;
 public class LDAPUser implements UserDetails {
 
     @Id
-    @JsonIgnore
     private Name id;
 
     @Attribute(name = "uid")
