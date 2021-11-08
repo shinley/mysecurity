@@ -11,4 +11,5 @@ public class UserResource {
     public String greeting() {
         return "hello world";
     }
+
 }
