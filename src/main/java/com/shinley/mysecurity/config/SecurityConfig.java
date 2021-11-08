@@ -160,6 +160,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         };
     }
 
+    @Bean
     public PasswordEncoder passwordEncoder() {
         val idForDefault = "bcrypt";
         val encoders = Map.of(
